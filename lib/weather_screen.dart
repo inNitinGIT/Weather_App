@@ -63,7 +63,7 @@ return data;
        future: getCurrentWeather(),
        builder: (context, AsyncSnapshot<dynamic> snapshot) {
          if (snapshot.connectionState == ConnectionState.waiting) {  // this means when its loading , we do wait here .
-           return const Center(child: CircularProgressIndicator());  // do the circular progress indicator in middle
+           return const Center(child: CircularProgressIndicator.adaptive());  // do the circular progress indicator in center
          }
          if (snapshot.hasError) {
            return Center(

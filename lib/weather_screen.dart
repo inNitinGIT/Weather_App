@@ -69,7 +69,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
           final data = snapshot.data!;
           final currentTemp = data['list'][0]['main']['temp'];
-          final currentsky = data['list'][0]['Weather'][0]['main'];
+          final currentsky = data['list'][0]['weather'][0]['main'];
 
           return Padding(
             padding: const EdgeInsets.all(15.0),
@@ -103,7 +103,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              const Icon(Icons.cloud, size: 65),
+                              Icon(
+                                currentsky == 'Cloud' || currentsky == 'Rain'
+                                    ? Icons.cloud
+                                    : Icons.sunny,
+                                size: 65,
+                              ),
                               Text(currentsky, style: TextStyle(fontSize: 20)),
                               SizedBox(height: 10),
                             ],

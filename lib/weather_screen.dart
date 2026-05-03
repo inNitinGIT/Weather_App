@@ -163,21 +163,25 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 //     ],
                 //   ),
                 // ),
-ListView.builder(
-  itemCount: 5,
-  itemBuilder: (context,index){
-    final hourlyForecast  = data['list'][index+1];
-    final hourlySky = data['list'][index+1]['weather'][0]['main'];
-    final hourlyTemp = hourlyForecast['main']['temp'];
-    return HourlyForecastItem(
-      time: hourlyForecast['dt'].toString(),
-     temperature: hourlyTemp.toString(), 
-     icon:hourlySky =='Clouds'
-                         || hourlySky =='Rain' 
-                        ? Icons.cloud
-                        :Icons.sunny,
-                        );
-  }
+SizedBox
+(
+  height: 150,
+  child: ListView.builder(
+    itemCount: 5,
+    itemBuilder: (context,index){
+      final hourlyForecast  = data['list'][index+1];
+      final hourlySky = data['list'][index+1]['weather'][0]['main'];
+      final hourlyTemp = hourlyForecast['main']['temp'];
+      return HourlyForecastItem(
+        time: hourlyForecast['dt'].toString(),
+       temperature: hourlyTemp.toString(), 
+       icon:hourlySky =='Clouds'
+                           || hourlySky =='Rain' 
+                          ? Icons.cloud
+                          :Icons.sunny,
+                          );
+    }
+  ),
 ),
 
                 const SizedBox(height: 10),

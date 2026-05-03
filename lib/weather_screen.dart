@@ -8,6 +8,7 @@ import 'Hourly_forecast_item.dart';
 import 'additional_info_item.dart';
 import 'package:http/http.dart' as http;
 
+
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
 
@@ -18,18 +19,16 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
-      String cityName = 'london';
+      String cityName = 'assam';
       final res = await http.get(
         Uri.parse(
           'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$openWeatherAPIKey',
         ),
       );
       final data = jsonDecode(res.body);
-
       if (data['cod'] != '200') {
         throw 'UNEXPECTED ERROR Occurred';
       }
-
       return data;
     } catch (e) {
       throw e.toString();
@@ -42,7 +41,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
       appBar: AppBar(
         title: const Text(
           'Weather App',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold),
         ),
 
         centerTitle: true,
@@ -68,9 +68,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
           // if(snapshot.hasData)
 
           final data = snapshot.data!;
-          final currentTemp = data['list'][0]['main']['temp'];
-          final currentsky = data['list'][0]['weather'][0]['main'];
 
+          final currentWeatherData = data['list'][0];
+          final currentTemp = currentWeatherData['main']['temp'];
+          final currentsky = currentWeatherData['weather'][0]['main'];
+          final currentpressure = currentWeatherData['main']['pressure'];
+          final currentwindspeed = currentWeatherData['wind']['speed'];
+          final currenthumidity = currentWeatherData['main']['humidity'];
+          
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -103,7 +108,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Icon(
+                              Icon( // our default customized symbol
                                 currentsky == 'Cloud' || currentsky == 'Rain'
                                     ? Icons.cloud
                                     : Icons.sunny,
@@ -119,7 +124,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 const Text(
                   "Weather forecast",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -130,26 +134,27 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
+                      for(int i=1; i<5; i++ )
                       HourlyForecastItem(
                         icon: Icons.cloud,
                         temperature: '300',
-                        time: '10:00',
+                        time: data['list'][i+1]['dt'].toString(),
                       ),
-                      HourlyForecastItem(
-                        icon: Icons.sunny,
-                        temperature: '320',
-                        time: '12:00',
-                      ),
-                      HourlyForecastItem(
-                        icon: Icons.foggy,
-                        temperature: '278.34',
-                        time: '01:00',
-                      ),
-                      HourlyForecastItem(
-                        icon: Icons.heat_pump,
-                        temperature: '300',
-                        time: '04:00',
-                      ),
+                      // HourlyForecastItem(
+                      //   icon: Icons.sunny,
+                      //   temperature: '320',
+                      //   time: '12:00',
+                      // ),
+                      // HourlyForecastItem(
+                      //   icon: Icons.foggy,
+                      //   temperature: '278.34',
+                      //   time: '01:00',
+                      // ),
+                      // HourlyForecastItem(
+                      //   icon: Icons.heat_pump,
+                      //   temperature: '300',
+                      //   time: '04:00',
+                      // ),
                     ],
                   ),
                 ),
@@ -166,17 +171,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     AdditionalInfoItem(
                       icon: Icons.water_drop,
                       label: 'Humidity',
-                      value: '100',
+                      value: currenthumidity.toString(),
                     ),
                     AdditionalInfoItem(
                       icon: Icons.air,
                       label: 'Air Quality',
-                      value: '90',
+                      value: currentwindspeed.toString(),
                     ),
                     AdditionalInfoItem(
                       icon: Icons.beach_access,
                       label: 'Pressure',
-                      value: '130',
+                      value: currentpressure.toString(),
                     ),
                   ],
                 ),

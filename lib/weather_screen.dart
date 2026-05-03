@@ -128,39 +128,57 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   "Weather forecast",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 14),
-                // weather forecast features alinged in row
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for(int i=1; i<25; i++ )
-                      HourlyForecastItem(
-                        icon: data['list'][i+1]['weather'][0]['main'] =='Clouds'
-                        || data['list'][i+1]['weather'][0]['main'] =='Rain' 
+               
+               
+                // const SizedBox(height: 14),
+                // // weather forecast features alinged in row
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: [
+                //       for(int i=1; i<25; i++ ) // ... []
+                //       HourlyForecastItem(
+                //         icon: data['list'][i+1]['weather'][0]['main'] =='Clouds'
+                //         || data['list'][i+1]['weather'][0]['main'] =='Rain' 
+                //         ? Icons.cloud
+                //         :Icons.sunny,
+                //         temperature: data['list'][i+1]['main']['temp'].toString(),
+                //         time: data['list'][i+1]['dt_txt'].toString(),
+                //       ),
+                //       // HourlyForecastItem(
+                //       //   icon: Icons.sunny,
+                //       //   temperature: '320',
+                //       //   time: '12:00',
+                //       // ),
+                //       // HourlyForecastItem(
+                //       //   icon: Icons.foggy,
+                //       //   temperature: '278.34',
+                //       //   time: '01:00',
+                //       // ),
+                //       // HourlyForecastItem(
+                //       //   icon: Icons.heat_pump,
+                //       //   temperature: '300',
+                //       //   time: '04:00',
+                //       // ),
+                //     ],
+                //   ),
+                // ),
+ListView.builder(
+  itemCount: 5,
+  itemBuilder: (context,index){
+    final hourlyForecast  = data['list'][index+1];
+    final hourlySky = data['list'][index+1]['weather'][0]['main'];
+    final hourlyTemp = hourlyForecast['main']['temp'];
+    return HourlyForecastItem(
+      time: hourlyForecast['dt'].toString(),
+     temperature: hourlyTemp.toString(), 
+     icon:hourlySky =='Clouds'
+                         || hourlySky =='Rain' 
                         ? Icons.cloud
                         :Icons.sunny,
-                        temperature: data['list'][i+1]['main']['temp'].toString(),
-                        time: data['list'][i+1]['dt_txt'].toString(),
-                      ),
-                      // HourlyForecastItem(
-                      //   icon: Icons.sunny,
-                      //   temperature: '320',
-                      //   time: '12:00',
-                      // ),
-                      // HourlyForecastItem(
-                      //   icon: Icons.foggy,
-                      //   temperature: '278.34',
-                      //   time: '01:00',
-                      // ),
-                      // HourlyForecastItem(
-                      //   icon: Icons.heat_pump,
-                      //   temperature: '300',
-                      //   time: '04:00',
-                      // ),
-                    ],
-                  ),
-                ),
+                        );
+  }
+),
 
                 const SizedBox(height: 10),
                 const Text(

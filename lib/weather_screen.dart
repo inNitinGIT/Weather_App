@@ -19,7 +19,7 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
-      String cityName = 'assam';
+      String cityName = 'delhi';
       final res = await http.get(
         Uri.parse(
           'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$openWeatherAPIKey',
@@ -134,11 +134,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      for(int i=1; i<5; i++ )
+                      for(int i=1; i<25; i++ )
                       HourlyForecastItem(
-                        icon: Icons.cloud,
-                        temperature: '300',
-                        time: data['list'][i+1]['dt'].toString(),
+                        icon: data['list'][i+1]['weather'][0]['main'] =='Clouds'
+                        || data['list'][i+1]['weather'][0]['main'] =='Rain' 
+                        ? Icons.cloud
+                        :Icons.sunny,
+                        temperature: data['list'][i+1]['main']['temp'].toString(),
+                        time: data['list'][i+1]['dt_txt'].toString(),
                       ),
                       // HourlyForecastItem(
                       //   icon: Icons.sunny,
